@@ -29,12 +29,16 @@ namespace Ex1
             {
                 try
                 {
-                    conn.Open();
-                    string query = "SELECT AgentID, AgentName, Address FROM Agent";
+                    string query = "SELECT AgentID, AgentName, Address FROM Agent ORDER BY AgentID";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     dgvAgents.DataSource = dt;
+
+                    // Format columns
+                    dgvAgents.Columns["AgentID"].HeaderText = "Agent ID";
+                    dgvAgents.Columns["AgentName"].HeaderText = "Agent Name";
+                    dgvAgents.Columns["Address"].HeaderText = "Address";
                 }
                 catch (Exception ex)
                 {
@@ -42,34 +46,63 @@ namespace Ex1
                 }
             }
         }
-
-        private void btnSave_Click(object sender, EventArgs e)
+        private int GetNextAgentId()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
+                    string query = "SELECT ISNULL(MAX(AgentID), 0) + 1 FROM Agent";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    return (int)cmd.ExecuteScalar();
+                }
+                catch (Exception)
+                {
+                    return 1; // Return 1 if there's an error or table is empty
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            // Validate input
+            if (string.IsNullOrWhiteSpace(txtAgentName.Text))
+            {
+                MessageBox.Show("Please enter an agent name.");
+                txtAgentName.Focus();
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
                     string query;
+                    SqlCommand cmd;
+
                     if (selectedAgentId.HasValue)
                     {
+                        // Update existing agent
                         query = @"UPDATE Agent 
-                                 SET AgentName = @name, Address = @address 
-                                 WHERE AgentID = @id";
+                             SET AgentName = @name, Address = @address 
+                             WHERE AgentID = @id";
+                        cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", selectedAgentId.Value);
                     }
                     else
                     {
-                        query = @"INSERT INTO Agent (AgentName, Address) 
-                                 VALUES (@name, @address)";
+                        // Insert new agent with next available ID
+                        int nextId = GetNextAgentId();
+                        query = @"INSERT INTO Agent (AgentID, AgentName, Address) 
+                             VALUES (@id, @name, @address)";
+                        cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", nextId);
                     }
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@name", txtAgentName.Text);
-                    cmd.Parameters.AddWithValue("@address", txtAddress.Text);
-                    if (selectedAgentId.HasValue)
-                    {
-                        cmd.Parameters.AddWithValue("@id", selectedAgentId.Value);
-                    }
+                    cmd.Parameters.AddWithValue("@name", txtAgentName.Text.Trim());
+                    cmd.Parameters.AddWithValue("@address", txtAddress.Text.Trim());
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Agent saved successfully!");
@@ -91,26 +124,39 @@ namespace Ex1
                 return;
             }
 
-            if (MessageBox.Show("Are you sure you want to delete this agent?", "Confirm Delete",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            // Check if agent has any orders before deleting
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                try
                 {
-                    try
+                    conn.Open();
+                    string checkQuery = "SELECT COUNT(*) FROM [Order] WHERE AgentID = @id";
+                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+                    checkCmd.Parameters.AddWithValue("@id", selectedAgentId.Value);
+                    int orderCount = (int)checkCmd.ExecuteScalar();
+
+                    if (orderCount > 0)
                     {
-                        conn.Open();
-                        string query = "DELETE FROM Agent WHERE AgentID = @id";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", selectedAgentId.Value);
-                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Cannot delete this agent because they have existing orders.");
+                        return;
+                    }
+
+                    if (MessageBox.Show("Are you sure you want to delete this agent?", "Confirm Delete",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        string deleteQuery = "DELETE FROM Agent WHERE AgentID = @id";
+                        SqlCommand deleteCmd = new SqlCommand(deleteQuery, conn);
+                        deleteCmd.Parameters.AddWithValue("@id", selectedAgentId.Value);
+                        deleteCmd.ExecuteNonQuery();
+
                         MessageBox.Show("Agent deleted successfully!");
                         ClearForm();
                         LoadAgents();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error deleting agent: " + ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error deleting agent: " + ex.Message);
                 }
             }
         }
@@ -139,6 +185,7 @@ namespace Ex1
             txtAddress.Clear();
             btnSave.Text = "Save";
             btnDelete.Enabled = false;
+            txtAgentName.Focus();
         }
     }
 }

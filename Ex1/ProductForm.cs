@@ -29,14 +29,13 @@ namespace Ex1
             {
                 try
                 {
-                    conn.Open();
-                    string query = "SELECT ItemID, ItemName, Size FROM Item";
+                    string query = "SELECT ItemID, ItemName, Size FROM Item ORDER BY ItemID";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     dgvProducts.DataSource = dt;
 
-                    // Rename the columns for display
+                    // Format columns
                     dgvProducts.Columns["ItemID"].HeaderText = "Product ID";
                     dgvProducts.Columns["ItemName"].HeaderText = "Product Name";
                     dgvProducts.Columns["Size"].HeaderText = "Size/Specification";
@@ -44,6 +43,23 @@ namespace Ex1
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error loading products: " + ex.Message);
+                }
+            }
+        }
+        private int GetNextProductId()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT ISNULL(MAX(ItemID), 0) + 1 FROM Item";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    return (int)cmd.ExecuteScalar();
+                }
+                catch (Exception)
+                {
+                    return 1; // Return 1 if there's an error or table is empty
                 }
             }
         }
@@ -62,25 +78,29 @@ namespace Ex1
                 {
                     conn.Open();
                     string query;
+                    SqlCommand cmd;
+
                     if (selectedProductId.HasValue)
                     {
+                        // Update existing product
                         query = @"UPDATE Item 
-                                 SET ItemName = @name, Size = @size 
-                                 WHERE ItemID = @id";
+                             SET ItemName = @name, Size = @size 
+                             WHERE ItemID = @id";
+                        cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", selectedProductId.Value);
                     }
                     else
                     {
-                        query = @"INSERT INTO Item (ItemName, Size) 
-                                 VALUES (@name, @size)";
+                        // Insert new product with next available ID
+                        int nextId = GetNextProductId();
+                        query = @"INSERT INTO Item (ItemID, ItemName, Size) 
+                             VALUES (@id, @name, @size)";
+                        cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", nextId);
                     }
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@name", txtProductName.Text.Trim());
                     cmd.Parameters.AddWithValue("@size", txtSize.Text.Trim());
-                    if (selectedProductId.HasValue)
-                    {
-                        cmd.Parameters.AddWithValue("@id", selectedProductId.Value);
-                    }
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Product saved successfully!");

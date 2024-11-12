@@ -24,6 +24,7 @@ namespace Ex1
             this.btnProducts = new System.Windows.Forms.Button();
             this.btnAgents = new System.Windows.Forms.Button();
             this.btnOrders = new System.Windows.Forms.Button();
+            this.btnFilter = new System.Windows.Forms.Button();
 
             // panelTop
             this.panelTop.BackColor = System.Drawing.Color.RoyalBlue;
@@ -82,12 +83,22 @@ namespace Ex1
             this.btnOrders.FlatStyle = FlatStyle.Flat;
             this.btnOrders.Cursor = Cursors.Hand;
             this.btnOrders.Click += new System.EventHandler(this.btnOrders_Click);
-
+            // btnFilter
+            this.btnFilter.Text = "Reports & Analysis";
+            this.btnFilter.Font = buttonFont;
+            this.btnFilter.Size = buttonSize;
+            this.btnFilter.Location = new System.Drawing.Point(10, 200);  // Position below Orders button
+            this.btnFilter.BackColor = buttonBackColor;
+            this.btnFilter.ForeColor = buttonForeColor;
+            this.btnFilter.FlatStyle = FlatStyle.Flat;
+            this.btnFilter.Cursor = Cursors.Hand;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // Add buttons to menu panel
             this.panelMenu.Controls.AddRange(new Control[] {
                 btnProducts,
                 btnAgents,
-                btnOrders
+                btnOrders,
+                btnFilter
             });
 
             // Add welcome label
@@ -125,5 +136,6 @@ namespace Ex1
         private System.Windows.Forms.Button btnProducts;
         private System.Windows.Forms.Button btnAgents;
         private System.Windows.Forms.Button btnOrders;
+        private System.Windows.Forms.Button btnFilter;
     }
 }

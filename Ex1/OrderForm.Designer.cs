@@ -38,6 +38,7 @@ namespace Ex1
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.grpOrderInfo.SuspendLayout();
             this.grpOrderDetails.SuspendLayout();
@@ -241,10 +242,8 @@ namespace Ex1
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(588, 520);
-            this.btnNew.Name = "btnNew";
+            this.btnNew.Location = new System.Drawing.Point(488, 520);
             this.btnNew.Size = new System.Drawing.Size(90, 32);
-            this.btnNew.TabIndex = 5;
             this.btnNew.Text = "New Order";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
@@ -252,12 +251,30 @@ namespace Ex1
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(688, 520);
-            this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(100, 32);
-            this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Save Order";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // Add btnDelete to Controls collection
+            this.Controls.AddRange(new Control[] {
+            panelTop,
+            grpOrderInfo,
+            grpOrderDetails,
+            dgvOrderDetails,
+            lblTotal,
+            btnNew,
+            btnDelete,  // Added Delete button
+            btnSave
+            });
+            //
+            // btnDelete
+            //
+            this.btnDelete.Location = new System.Drawing.Point(588, 520);
+            this.btnDelete.Size = new System.Drawing.Size(90, 32);
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Enabled = false;  // Disabled by default until an order is selected
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // OrderForm
             // 
@@ -311,5 +328,6 @@ namespace Ex1
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
