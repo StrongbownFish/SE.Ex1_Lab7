@@ -31,8 +31,6 @@ namespace Ex1
             this.cboProduct = new System.Windows.Forms.ComboBox();
             this.lblQuantity = new System.Windows.Forms.Label();
             this.nudQuantity = new System.Windows.Forms.NumericUpDown();
-            this.lblUnitPrice = new System.Windows.Forms.Label();
-            this.nudUnitPrice = new System.Windows.Forms.NumericUpDown();
             this.btnAddItem = new System.Windows.Forms.Button();
             this.dgvOrderDetails = new System.Windows.Forms.DataGridView();
             this.lblTotal = new System.Windows.Forms.Label();
@@ -43,7 +41,6 @@ namespace Ex1
             this.grpOrderInfo.SuspendLayout();
             this.grpOrderDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudUnitPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderDetails)).BeginInit();
             this.SuspendLayout();
             // 
@@ -122,8 +119,6 @@ namespace Ex1
             this.grpOrderDetails.Controls.Add(this.cboProduct);
             this.grpOrderDetails.Controls.Add(this.lblQuantity);
             this.grpOrderDetails.Controls.Add(this.nudQuantity);
-            this.grpOrderDetails.Controls.Add(this.lblUnitPrice);
-            this.grpOrderDetails.Controls.Add(this.nudUnitPrice);
             this.grpOrderDetails.Controls.Add(this.btnAddItem);
             this.grpOrderDetails.Location = new System.Drawing.Point(12, 150);
             this.grpOrderDetails.Name = "grpOrderDetails";
@@ -136,7 +131,7 @@ namespace Ex1
             // lblProduct
             // 
             this.lblProduct.AutoSize = true;
-            this.lblProduct.Location = new System.Drawing.Point(11, 31);
+            this.lblProduct.Location = new System.Drawing.Point(20, 30);
             this.lblProduct.Name = "lblProduct";
             this.lblProduct.Size = new System.Drawing.Size(63, 20);
             this.lblProduct.TabIndex = 0;
@@ -147,13 +142,13 @@ namespace Ex1
             this.cboProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboProduct.Location = new System.Drawing.Point(80, 27);
             this.cboProduct.Name = "cboProduct";
-            this.cboProduct.Size = new System.Drawing.Size(200, 28);
+            this.cboProduct.Size = new System.Drawing.Size(300, 23);
             this.cboProduct.TabIndex = 1;
             // 
             // lblQuantity
             // 
             this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Location = new System.Drawing.Point(286, 30);
+            this.lblQuantity.Location = new System.Drawing.Point(390, 30);
             this.lblQuantity.Name = "lblQuantity";
             this.lblQuantity.Size = new System.Drawing.Size(68, 20);
             this.lblQuantity.TabIndex = 2;
@@ -161,51 +156,17 @@ namespace Ex1
             // 
             // nudQuantity
             // 
-            this.nudQuantity.Location = new System.Drawing.Point(360, 27);
-            this.nudQuantity.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nudQuantity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.nudQuantity.Location = new System.Drawing.Point(450, 27);
+            this.nudQuantity.Maximum = 1000;
+            this.nudQuantity.Minimum = 1;
             this.nudQuantity.Name = "nudQuantity";
-            this.nudQuantity.Size = new System.Drawing.Size(80, 27);
+            this.nudQuantity.Size = new System.Drawing.Size(80, 23);
             this.nudQuantity.TabIndex = 3;
-            this.nudQuantity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblUnitPrice
-            // 
-            this.lblUnitPrice.AutoSize = true;
-            this.lblUnitPrice.Location = new System.Drawing.Point(439, 31);
-            this.lblUnitPrice.Name = "lblUnitPrice";
-            this.lblUnitPrice.Size = new System.Drawing.Size(75, 20);
-            this.lblUnitPrice.TabIndex = 4;
-            this.lblUnitPrice.Text = "Unit Price:";
-            // 
-            // nudUnitPrice
-            // 
-            this.nudUnitPrice.DecimalPlaces = 2;
-            this.nudUnitPrice.Location = new System.Drawing.Point(520, 27);
-            this.nudUnitPrice.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.nudUnitPrice.Name = "nudUnitPrice";
-            this.nudUnitPrice.Size = new System.Drawing.Size(100, 27);
-            this.nudUnitPrice.TabIndex = 5;
+            this.nudQuantity.Value = 1;
             // 
             // btnAddItem
             // 
-            this.btnAddItem.Location = new System.Drawing.Point(640, 26);
+            this.btnAddItem.Location = new System.Drawing.Point(540, 26);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.Size = new System.Drawing.Size(110, 25);
             this.btnAddItem.TabIndex = 6;
@@ -300,7 +261,6 @@ namespace Ex1
             this.grpOrderDetails.ResumeLayout(false);
             this.grpOrderDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudUnitPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderDetails)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -321,8 +281,6 @@ namespace Ex1
         private System.Windows.Forms.ComboBox cboProduct;
         private System.Windows.Forms.Label lblQuantity;
         private System.Windows.Forms.NumericUpDown nudQuantity;
-        private System.Windows.Forms.Label lblUnitPrice;
-        private System.Windows.Forms.NumericUpDown nudUnitPrice;
         private System.Windows.Forms.Button btnAddItem;
         private System.Windows.Forms.DataGridView dgvOrderDetails;
         private System.Windows.Forms.Label lblTotal;

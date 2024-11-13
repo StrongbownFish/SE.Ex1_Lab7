@@ -29,16 +29,18 @@ namespace Ex1
             {
                 try
                 {
-                    string query = "SELECT ItemID, ItemName, Size FROM Item ORDER BY ItemID";
+                    string query = "SELECT ItemID, ItemName, Size, Price FROM Item ORDER BY ItemID";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     dgvProducts.DataSource = dt;
 
-                    // Format columns
+                    // Format grid columns
                     dgvProducts.Columns["ItemID"].HeaderText = "Product ID";
                     dgvProducts.Columns["ItemName"].HeaderText = "Product Name";
                     dgvProducts.Columns["Size"].HeaderText = "Size/Specification";
+                    dgvProducts.Columns["Price"].HeaderText = "Price";
+                    dgvProducts.Columns["Price"].DefaultCellStyle.Format = "N2";
                 }
                 catch (Exception ex)
                 {
@@ -59,7 +61,7 @@ namespace Ex1
                 }
                 catch (Exception)
                 {
-                    return 1; // Return 1 if there's an error or table is empty
+                    return 1;
                 }
             }
         }
@@ -69,6 +71,14 @@ namespace Ex1
             if (string.IsNullOrWhiteSpace(txtProductName.Text))
             {
                 MessageBox.Show("Please enter a product name.");
+                txtProductName.Focus();
+                return;
+            }
+
+            if (nudPrice.Value <= 0)
+            {
+                MessageBox.Show("Please enter a valid price.");
+                nudPrice.Focus();
                 return;
             }
 
@@ -82,25 +92,24 @@ namespace Ex1
 
                     if (selectedProductId.HasValue)
                     {
-                        // Update existing product
                         query = @"UPDATE Item 
-                             SET ItemName = @name, Size = @size 
+                             SET ItemName = @name, Size = @size, Price = @price 
                              WHERE ItemID = @id";
                         cmd = new SqlCommand(query, conn);
                         cmd.Parameters.AddWithValue("@id", selectedProductId.Value);
                     }
                     else
                     {
-                        // Insert new product with next available ID
                         int nextId = GetNextProductId();
-                        query = @"INSERT INTO Item (ItemID, ItemName, Size) 
-                             VALUES (@id, @name, @size)";
+                        query = @"INSERT INTO Item (ItemID, ItemName, Size, Price) 
+                             VALUES (@id, @name, @size, @price)";
                         cmd = new SqlCommand(query, conn);
                         cmd.Parameters.AddWithValue("@id", nextId);
                     }
 
                     cmd.Parameters.AddWithValue("@name", txtProductName.Text.Trim());
                     cmd.Parameters.AddWithValue("@size", txtSize.Text.Trim());
+                    cmd.Parameters.AddWithValue("@price", nudPrice.Value);
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Product saved successfully!");
@@ -113,7 +122,6 @@ namespace Ex1
                 }
             }
         }
-
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (!selectedProductId.HasValue)
@@ -130,7 +138,7 @@ namespace Ex1
                     try
                     {
                         conn.Open();
-                        // First check if the product is used in any orders
+                        // Check if product is used in any orders
                         string checkQuery = "SELECT COUNT(*) FROM OrderDetail WHERE ItemID = @id";
                         SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                         checkCmd.Parameters.AddWithValue("@id", selectedProductId.Value);
@@ -166,6 +174,7 @@ namespace Ex1
                 selectedProductId = Convert.ToInt32(dgvProducts.Rows[e.RowIndex].Cells["ItemID"].Value);
                 txtProductName.Text = dgvProducts.Rows[e.RowIndex].Cells["ItemName"].Value.ToString();
                 txtSize.Text = dgvProducts.Rows[e.RowIndex].Cells["Size"].Value.ToString();
+                nudPrice.Value = Convert.ToDecimal(dgvProducts.Rows[e.RowIndex].Cells["Price"].Value);
                 btnSave.Text = "Update";
                 btnDelete.Enabled = true;
             }
@@ -181,6 +190,7 @@ namespace Ex1
             selectedProductId = null;
             txtProductName.Clear();
             txtSize.Clear();
+            nudPrice.Value = 0;
             btnSave.Text = "Save";
             btnDelete.Enabled = false;
             txtProductName.Focus();

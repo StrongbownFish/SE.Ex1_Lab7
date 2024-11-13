@@ -29,12 +29,15 @@ namespace Ex1
             this.txtProductName = new System.Windows.Forms.TextBox();
             this.lblSize = new System.Windows.Forms.Label();
             this.txtSize = new System.Windows.Forms.TextBox();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.nudPrice = new System.Windows.Forms.NumericUpDown();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.dgvProducts = new System.Windows.Forms.DataGridView();
             this.panelTop.SuspendLayout();
             this.grpProductDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,13 +92,13 @@ namespace Ex1
             // 
             this.txtProductName.Location = new System.Drawing.Point(110, 27);
             this.txtProductName.Name = "txtProductName";
-            this.txtProductName.Size = new System.Drawing.Size(250, 27);
+            this.txtProductName.Size = new System.Drawing.Size(200, 23);
             this.txtProductName.TabIndex = 1;
             // 
             // lblSize
             // 
             this.lblSize.AutoSize = true;
-            this.lblSize.Location = new System.Drawing.Point(380, 30);
+            this.lblSize.Location = new System.Drawing.Point(320, 30);
             this.lblSize.Name = "lblSize";
             this.lblSize.Size = new System.Drawing.Size(131, 20);
             this.lblSize.TabIndex = 2;
@@ -103,10 +106,22 @@ namespace Ex1
             // 
             // txtSize
             // 
-            this.txtSize.Location = new System.Drawing.Point(480, 27);
+            this.txtSize.Location = new System.Drawing.Point(420, 27);
             this.txtSize.Name = "txtSize";
-            this.txtSize.Size = new System.Drawing.Size(280, 27);
+            this.txtSize.Size = new System.Drawing.Size(150, 23);
             this.txtSize.TabIndex = 3;
+            //
+            // Price
+            //
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(580, 30);
+            this.lblPrice.Text = "Price:";
+            this.nudPrice.Location = new System.Drawing.Point(630, 27);
+            this.nudPrice.Size = new System.Drawing.Size(120, 23);
+            this.nudPrice.DecimalPlaces = 2;
+            this.nudPrice.Maximum = 1000000;
+            this.nudPrice.Minimum = 0;
+            this.nudPrice.ThousandsSeparator = true;
             // 
             // btnNew
             // 
@@ -153,10 +168,19 @@ namespace Ex1
             this.dgvProducts.Size = new System.Drawing.Size(776, 359);
             this.dgvProducts.TabIndex = 2;
             this.dgvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProducts_CellClick);
+            //
+            // Add controls to group box
+            //
+            this.grpProductDetails.Controls.AddRange(new Control[] {
+            lblProductName, txtProductName,
+            lblSize, txtSize,
+            lblPrice, nudPrice,
+            btnNew, btnSave, btnDelete
+            });
             // 
             // ProductForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
             this.Controls.Add(this.panelTop);
@@ -171,6 +195,7 @@ namespace Ex1
             this.panelTop.PerformLayout();
             this.grpProductDetails.ResumeLayout(false);
             this.grpProductDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).EndInit();
             this.ResumeLayout(false);
 
@@ -185,6 +210,8 @@ namespace Ex1
         private System.Windows.Forms.TextBox txtProductName;
         private System.Windows.Forms.Label lblSize;
         private System.Windows.Forms.TextBox txtSize;
+        private System.Windows.Forms.Label lblPrice;
+        private System.Windows.Forms.NumericUpDown nudPrice;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnDelete;

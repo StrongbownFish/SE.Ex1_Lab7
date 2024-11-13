@@ -49,7 +49,6 @@ namespace Ex1
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
-
                     cboAgent.DataSource = dt;
                     cboAgent.DisplayMember = "AgentName";
                     cboAgent.ValueMember = "AgentID";
@@ -68,19 +67,40 @@ namespace Ex1
             {
                 try
                 {
-                    string query = "SELECT ItemID, ItemName FROM Item ORDER BY ItemName";
+                    string query = @"SELECT ItemID, 
+                                ItemName + ' (Price: ' + CAST(Price AS varchar) + ')' AS DisplayName,
+                                Price 
+                                FROM Item 
+                                ORDER BY ItemName";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
-
                     cboProduct.DataSource = dt;
-                    cboProduct.DisplayMember = "ItemName";
+                    cboProduct.DisplayMember = "DisplayName";
                     cboProduct.ValueMember = "ItemID";
                     cboProduct.SelectedIndex = -1;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error loading products: " + ex.Message);
+                }
+            }
+        }
+        private decimal GetProductPrice(int itemId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT Price FROM Item WHERE ItemID = @itemId";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@itemId", itemId);
+                    return (decimal)cmd.ExecuteScalar();
+                }
+                catch (Exception)
+                {
+                    return 0;
                 }
             }
         }
@@ -147,29 +167,26 @@ namespace Ex1
                 return;
             }
 
-            if (nudUnitPrice.Value <= 0)
-            {
-                MessageBox.Show("Please enter a valid unit price.");
-                nudUnitPrice.Focus();
-                return;
-            }
+            // Get price from the database
+            int itemId = Convert.ToInt32(cboProduct.SelectedValue);
+            decimal price = GetProductPrice(itemId);
+            decimal itemTotal = price * nudQuantity.Value;
 
             // Check if product already exists in the order
             foreach (DataRow row in dtOrderDetails.Rows)
             {
-                if (row["ItemID"].ToString() == cboProduct.SelectedValue.ToString())
+                if (row["ItemID"].ToString() == itemId.ToString())
                 {
                     MessageBox.Show("This product is already in the order. Please update the existing entry instead.");
                     return;
                 }
             }
 
-            decimal itemTotal = nudQuantity.Value * nudUnitPrice.Value;
             DataRow newRow = dtOrderDetails.NewRow();
-            newRow["ItemID"] = cboProduct.SelectedValue;
+            newRow["ItemID"] = itemId;
             newRow["ItemName"] = cboProduct.Text;
             newRow["Quantity"] = nudQuantity.Value;
-            newRow["UnitAmount"] = nudUnitPrice.Value;
+            newRow["UnitAmount"] = price;
             newRow["TotalAmount"] = itemTotal;
             dtOrderDetails.Rows.Add(newRow);
 
@@ -368,7 +385,6 @@ namespace Ex1
         {
             cboProduct.SelectedIndex = -1;
             nudQuantity.Value = 1;
-            nudUnitPrice.Value = 0;
             cboProduct.Focus();
         }
 
