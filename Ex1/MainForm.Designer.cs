@@ -123,7 +123,7 @@ namespace Ex1
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(200, 45);
             this.btnFilter.TabIndex = 3;
-            this.btnFilter.Text = "Reports & Analysis";
+            this.btnFilter.Text = "Reports and Analysis";
             this.btnFilter.UseVisualStyleBackColor = false;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
