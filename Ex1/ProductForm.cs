@@ -74,14 +74,6 @@ namespace Ex1
                 txtProductName.Focus();
                 return;
             }
-
-            if (nudPrice.Value <= 0)
-            {
-                MessageBox.Show("Please enter a valid price.");
-                nudPrice.Focus();
-                return;
-            }
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
@@ -109,7 +101,6 @@ namespace Ex1
 
                     cmd.Parameters.AddWithValue("@name", txtProductName.Text.Trim());
                     cmd.Parameters.AddWithValue("@size", txtSize.Text.Trim());
-                    cmd.Parameters.AddWithValue("@price", nudPrice.Value);
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Product saved successfully!");
@@ -174,7 +165,7 @@ namespace Ex1
                 selectedProductId = Convert.ToInt32(dgvProducts.Rows[e.RowIndex].Cells["ItemID"].Value);
                 txtProductName.Text = dgvProducts.Rows[e.RowIndex].Cells["ItemName"].Value.ToString();
                 txtSize.Text = dgvProducts.Rows[e.RowIndex].Cells["Size"].Value.ToString();
-                nudPrice.Value = Convert.ToDecimal(dgvProducts.Rows[e.RowIndex].Cells["Price"].Value);
+                lblPriceValue.Text = Convert.ToDecimal(dgvProducts.Rows[e.RowIndex].Cells["Price"].Value).ToString("N2");
                 btnSave.Text = "Update";
                 btnDelete.Enabled = true;
             }
@@ -190,7 +181,7 @@ namespace Ex1
             selectedProductId = null;
             txtProductName.Clear();
             txtSize.Clear();
-            nudPrice.Value = 0;
+            lblPriceValue.Text = "0.00";
             btnSave.Text = "Save";
             btnDelete.Enabled = false;
             txtProductName.Focus();

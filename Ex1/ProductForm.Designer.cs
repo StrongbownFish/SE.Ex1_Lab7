@@ -29,15 +29,14 @@ namespace Ex1
             this.txtProductName = new System.Windows.Forms.TextBox();
             this.lblSize = new System.Windows.Forms.Label();
             this.txtSize = new System.Windows.Forms.TextBox();
-            this.lblPrice = new System.Windows.Forms.Label();
-            this.nudPrice = new System.Windows.Forms.NumericUpDown();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.lblPriceValue = new System.Windows.Forms.Label();
             this.dgvProducts = new System.Windows.Forms.DataGridView();
             this.panelTop.SuspendLayout();
             this.grpProductDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,6 +67,8 @@ namespace Ex1
             this.grpProductDetails.Controls.Add(this.txtProductName);
             this.grpProductDetails.Controls.Add(this.lblSize);
             this.grpProductDetails.Controls.Add(this.txtSize);
+            this.grpProductDetails.Controls.Add(this.lblPrice);
+            this.grpProductDetails.Controls.Add(this.lblPriceValue);
             this.grpProductDetails.Controls.Add(this.btnNew);
             this.grpProductDetails.Controls.Add(this.btnSave);
             this.grpProductDetails.Controls.Add(this.btnDelete);
@@ -92,7 +93,7 @@ namespace Ex1
             // 
             this.txtProductName.Location = new System.Drawing.Point(110, 27);
             this.txtProductName.Name = "txtProductName";
-            this.txtProductName.Size = new System.Drawing.Size(200, 23);
+            this.txtProductName.Size = new System.Drawing.Size(200, 27);
             this.txtProductName.TabIndex = 1;
             // 
             // lblSize
@@ -108,20 +109,8 @@ namespace Ex1
             // 
             this.txtSize.Location = new System.Drawing.Point(420, 27);
             this.txtSize.Name = "txtSize";
-            this.txtSize.Size = new System.Drawing.Size(150, 23);
+            this.txtSize.Size = new System.Drawing.Size(150, 27);
             this.txtSize.TabIndex = 3;
-            //
-            // Price
-            //
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Location = new System.Drawing.Point(580, 30);
-            this.lblPrice.Text = "Price:";
-            this.nudPrice.Location = new System.Drawing.Point(630, 27);
-            this.nudPrice.Size = new System.Drawing.Size(120, 23);
-            this.nudPrice.DecimalPlaces = 2;
-            this.nudPrice.Maximum = 1000000;
-            this.nudPrice.Minimum = 0;
-            this.nudPrice.ThousandsSeparator = true;
             // 
             // btnNew
             // 
@@ -154,6 +143,23 @@ namespace Ex1
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(580, 30);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(44, 20);
+            this.lblPrice.TabIndex = 7;
+            this.lblPrice.Text = "Price:";
+            //
+            // lblPriceValue
+            //
+            this.lblPriceValue.AutoSize = true;
+            this.lblPriceValue.Location = new System.Drawing.Point(630, 30);
+            this.lblPriceValue.Size = new System.Drawing.Size(100, 23);
+            this.lblPriceValue.Text = "0.00";
+            this.lblPriceValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            // 
             // dgvProducts
             // 
             this.dgvProducts.AllowUserToAddRows = false;
@@ -168,19 +174,10 @@ namespace Ex1
             this.dgvProducts.Size = new System.Drawing.Size(776, 359);
             this.dgvProducts.TabIndex = 2;
             this.dgvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProducts_CellClick);
-            //
-            // Add controls to group box
-            //
-            this.grpProductDetails.Controls.AddRange(new Control[] {
-            lblProductName, txtProductName,
-            lblSize, txtSize,
-            lblPrice, nudPrice,
-            btnNew, btnSave, btnDelete
-            });
             // 
             // ProductForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
             this.Controls.Add(this.panelTop);
@@ -195,7 +192,6 @@ namespace Ex1
             this.panelTop.PerformLayout();
             this.grpProductDetails.ResumeLayout(false);
             this.grpProductDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).EndInit();
             this.ResumeLayout(false);
 
@@ -211,7 +207,7 @@ namespace Ex1
         private System.Windows.Forms.Label lblSize;
         private System.Windows.Forms.TextBox txtSize;
         private System.Windows.Forms.Label lblPrice;
-        private System.Windows.Forms.NumericUpDown nudPrice;
+        private System.Windows.Forms.Label lblPriceValue;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnDelete;

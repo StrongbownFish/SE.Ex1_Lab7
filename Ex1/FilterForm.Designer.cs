@@ -130,6 +130,5 @@ namespace Ex1
         private System.Windows.Forms.Button btnCustomerPurchases;
         private System.Windows.Forms.Button btnItemsByCustomer;
         private System.Windows.Forms.DataGridView dgvResults;
-        private Panel dataPanel;
     }
 }

@@ -39,5 +39,10 @@ namespace Ex1
             FilterForm filterForm = new FilterForm();
             filterForm.ShowDialog();
         }
+        private void btnOrderDetail_Click(object sender, EventArgs e)
+        {
+            OrderDetail orderDetailForm = new OrderDetail();
+            orderDetailForm.ShowDialog();
+        }
     }
 }
