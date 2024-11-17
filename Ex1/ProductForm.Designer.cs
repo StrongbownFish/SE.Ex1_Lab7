@@ -158,7 +158,6 @@ namespace Ex1
             this.lblPriceValue.Location = new System.Drawing.Point(630, 30);
             this.lblPriceValue.Size = new System.Drawing.Size(100, 23);
             this.lblPriceValue.Text = "0.00";
-            this.lblPriceValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             // 
             // dgvProducts
             // 
